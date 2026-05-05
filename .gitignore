@@ -1,0 +1,17 @@
+# PageMind — Chrome Extension .gitignore
+
+# API Key — NEVER commit this
+background/config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if ever used)
+node_modules/
