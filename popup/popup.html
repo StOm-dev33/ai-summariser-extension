@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self';" />
+  <title>Nexus AI Summarizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#818CF8"/>
+              <stop offset="100%" stop-color="#6366F1"/>
+            </linearGradient>
+          </defs>
+          <path d="M14 2L25.5 8.5V19.5L14 26L2.5 19.5V8.5L14 2Z" fill="url(#logoGrad)" opacity="0.15"/>
+          <path d="M14 2L25.5 8.5V19.5L14 26L2.5 19.5V8.5L14 2Z" stroke="url(#logoGrad)" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="3.5" fill="url(#logoGrad)"/>
+          <path d="M14 7V10.5M14 17.5V21M7 14H10.5M17.5 14H21" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand">
+        <span class="brand-name">Nexus</span>
+        <span class="brand-sub">AI Summarizer</span>
+      </div>
+    </div>
+   <button class="btn-icon" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M17.66 6.34l-1.41 1.41M4.93 19.07l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </button>
+  </header>
+
+  <!-- ── Page Info ──────────────────────────────────────────── -->
+  <div class="page-info" id="page-info">
+    <div class="page-favicon" id="page-favicon" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M4 5h6M4 7h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="page-title" id="page-title">Loading page…</span>
+  </div>
+
+  <!-- ── Main Content ───────────────────────────────────────── -->
+  <main class="main" id="main-content">
+
+    <!-- Idle State -->
+    <div class="state state-idle" id="state-idle">
+      <div class="idle-art" aria-hidden="true">
+        <div class="idle-ring idle-ring--1"></div>
+        <div class="idle-ring idle-ring--2"></div>
+        <div class="idle-ring idle-ring--3"></div>
+        <svg class="idle-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4C9.37 4 4 9.37 4 16s5.37 12 12 12 12-5.37 12-12S22.63 4 16 4Z" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+          <path d="M10 13h12M10 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="4" fill="#6366F1"/>
+          <path d="M22.5 24h3M24 22.5v3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="idle-text">Click <strong>Summarize</strong> to extract AI-powered insights from this page.</p>
+    </div>
+
+    <!-- Loading State -->
+    <div class="state state-loading hidden" id="state-loading" role="status" aria-live="polite">
+      <div class="loader-wrap" aria-hidden="true">
+        <div class="loader-orbit">
+          <div class="loader-dot"></div>
+        </div>
+        <div class="loader-pulse"></div>
+      </div>
+      <div class="loading-text-wrap">
+        <p class="loading-title" id="loading-title">Analyzing page…</p>
+        <p class="loading-sub" id="loading-sub">Extracting content</p>
+      </div>
+      <div class="loading-steps" aria-hidden="true">
+        <div class="step" id="step-1" data-active="true">
+          <div class="step-dot"></div>
+          <span>Extracting content</span>
+        </div>
+        <div class="step" id="step-2">
+          <div class="step-dot"></div>
+          <span>Sending to AI</span>
+        </div>
+        <div class="step" id="step-3">
+          <div class="step-dot"></div>
+          <span>Generating summary</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="state state-error hidden" id="state-error" role="alert" aria-live="assertive">
+      <div class="error-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="11" stroke="#EF4444" stroke-width="1.5"/>
+          <path d="M14 9v6M14 18v.5" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="error-message" id="error-message">Something went wrong.</p>
+      <button class="btn btn-secondary btn-sm" id="btn-retry" aria-label="Retry summarization">
+        Try Again
+      </button>
+    </div>
+
+    <!-- Result State -->
+    <div class="state state-result hidden" id="state-result">
+
+      <!-- Meta strip -->
+      <div class="result-meta">
+        <div class="meta-badge" id="meta-reading-time">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.1"/>
+            <path d="M6 3.5V6l1.5 1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+          <span id="reading-time-text">— min read</span>
+        </div>
+        <div class="meta-badge" id="meta-word-count">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2 3h8M2 6h5M2 9h7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+          <span id="word-count-text">— words</span>
+        </div>
+        <div class="meta-badge meta-badge--cache hidden" id="meta-cache">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M5 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" stroke="currentColor" stroke-width="1"/>
+            <path d="M3.5 5l1 1 2-2" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Cached</span>
+        </div>
+      </div>
+
+      <!-- Summary Section -->
+      <section class="result-section" aria-labelledby="summary-heading">
+        <h2 class="section-heading" id="summary-heading">
+          <span class="section-heading-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 3h10M2 6h7M2 9h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Summary
+        </h2>
+        <ul class="summary-list" id="summary-list" aria-label="Page summary">
+        </ul>
+      </section>
+
+      <!-- Insights Section -->
+      <section class="result-section" aria-labelledby="insights-heading">
+        <h2 class="section-heading" id="insights-heading">
+          <span class="section-heading-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 2a3.5 3.5 0 0 1 1.5 6.67V10H5.5V8.67A3.5 3.5 0 0 1 7 2Z" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M5.5 11.5h3M6.25 13h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Key Insights
+        </h2>
+        <ul class="insights-list" id="insights-list" aria-label="Key insights">
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── Action Bar ─────────────────────────────────────────── -->
+  <footer class="action-bar">
+    <div class="action-left" id="action-left-btns">
+      <!-- Shown only when result is visible -->
+      <button class="btn-icon action-btn" id="btn-copy" aria-label="Copy summary to clipboard" title="Copy summary">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M10 5V3.5A1.5 1.5 0 0 0 8.5 2h-5A1.5 1.5 0 0 0 2 3.5v5A1.5 1.5 0 0 0 3.5 10H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn-icon action-btn" id="btn-highlight" aria-label="Highlight key terms on page" title="Highlight on page">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <path d="M3 11L6 8M9 2l4 4-6 6H3V9L9 3Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="btn-icon action-btn" id="btn-clear" aria-label="Clear summary" title="Clear">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <path d="M3 3l9 9M12 3L3 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <button class="btn btn-primary" id="btn-summarize" aria-label="Summarize current page">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+        <path d="M7.5 1.5C4.18 1.5 1.5 4.18 1.5 7.5S4.18 13.5 7.5 13.5 13.5 10.82 13.5 7.5 10.82 1.5 7.5 1.5Z" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M5.5 7.5l1.5 1.5 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Summarize Page
+    </button>
+  </footer>
+
+  <!-- ── Toast ──────────────────────────────────────────────── -->
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
