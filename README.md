@@ -1,4 +1,4 @@
-# PageMind — AI Page Summarizer Chrome Extension
+# Nexus AI Summariser — AI Page Summarizer Chrome Extension
 
 > Instantly summarize any webpage with AI. Get bullet-point summaries, key insights, reading time, and highlighted key terms — right in your browser.
 
@@ -40,15 +40,15 @@ Or download the ZIP and extract it.
 2. Enable **Developer mode** (toggle in the top-right corner)
 3. Click **"Load unpacked"**
 4. Select the `ai-page-summarizer-fixed` folder
-5. The PageMind icon will appear in your toolbar
+5. The Nexus AI Summariser icon will appear in your toolbar
 
 ### Step 3 — Add your API Key
 
-When you first click the PageMind icon, you'll see a setup page asking for your Groq API key.
+When you first click the Nexus AI Summariser icon, you'll see a setup page asking for your Groq API key.
 
 1. Get a free API key at: https://console.groq.com/keys
 2. Copy your key (starts with `gsk_`)
-3. Paste it into the PageMind setup form
+3. Paste it into the Nexus AI Summariser setup form
 4. Click **"Save & Continue"**
 
 **Your API key is stored securely in Chrome's local storage and never exposed.**
@@ -56,7 +56,7 @@ When you first click the PageMind icon, you'll see a setup page asking for your 
 ### Step 4 — Use it
 
 1. Navigate to any article, blog post, or webpage
-2. Click the PageMind icon in your toolbar
+2. Click the Nexus AI Summariser icon in your toolbar
 3. Click **"Summarize Page"**
 4. Read the AI-generated summary!
 
@@ -151,11 +151,11 @@ Summaries are cached in `chrome.storage.local` for **30 minutes**, keyed by norm
 
 ### "API Key Missing" — Extension Setup Required
 
-**Solution:** Click the PageMind icon and follow the setup prompt to enter your Groq API key.
+**Solution:** Click the Nexus AI Summariser icon and follow the setup prompt to enter your Groq API key.
 
 ### "Rate Limited" — Too Many Requests
 
-**Solution:** The API has rate limits. PageMind will automatically retry with exponential backoff. Wait a few moments and try again.
+**Solution:** The API has rate limits. Nexus AI Summariser will automatically retry with exponential backoff. Wait a few moments and try again.
 
 ### "Request Timeout" — Request Took Too Long
 
