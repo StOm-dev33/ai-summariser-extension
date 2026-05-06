@@ -186,19 +186,17 @@ Summaries are cached in `chrome.storage.local` for **30 minutes**, keyed by norm
 
 ## AI Integration
 
-- **Provider**: OpenAI
-- **Model**: `gpt-4o-mini` (fast, cost-efficient)
+- **Provider**: Groq
+- **Model**: `llama-3.3-70b-versatile` (fast, cost-efficient)
 - **Prompt strategy**: Instructs the model to return **only valid JSON** with a fixed schema
 - **Response schema**:
   ```json
   {
     "summary":     ["...", "..."],
-    "insights":    ["...", "..."],
-    "readingTime": 4,
+    "keyInsights": ["...", "..."],
+    "readingTime": "X min read",
     "wordCount":   1200,
-    "sentiment":   "positive|neutral|negative|mixed",
-    "contentType": "article|news|tutorial|product|research|other",
-    "keyTerms":    ["...", "..."]
+    "topic":       "..."
   }
   ```
 - Content is truncated at ~12,000 characters before sending to avoid token overflow
